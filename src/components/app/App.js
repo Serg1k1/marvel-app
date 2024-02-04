@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
@@ -8,38 +8,33 @@ import ErorrBoundary from '../errorBoundary/ErrorBoundary';
 
 import decoration from '../../resources/img/vision.png';
 
-class App extends Component {
-    state = {
-        selectedChar: null
+const App = () => {
+
+    const [selectedChar, setChar] = useState(null)
+
+    const onCharSelected = (id) => {
+        setChar(id)
     }
 
-    onCharSelected = (id) => {
-        this.setState({
-            selectedChar: id
-        })
-    }
-
-    render() {
-        return (
-            <div className="app">
-                <AppHeader />
-                <main>
+    return (
+        <div className="app">
+            <AppHeader />
+            <main>
+                <ErorrBoundary>
+                    <RandomChar />
+                </ErorrBoundary>
+                <div className="char__content">
                     <ErorrBoundary>
-                        <RandomChar />
+                        <CharList onCharSelected={onCharSelected} />
                     </ErorrBoundary>
-                    <div className="char__content">
-                        <ErorrBoundary>
-                            <CharList onCharSelected={this.onCharSelected} />
-                        </ErorrBoundary>
-                        <ErorrBoundary>
-                            <CharInfo charId={this.state.selectedChar} />
-                        </ErorrBoundary>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision" />
-                </main>
-            </div>
-        )
-    }
+                    <ErorrBoundary>
+                        <CharInfo charId={selectedChar} />
+                    </ErorrBoundary>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision" />
+            </main>
+        </div>
+    )
 }
 
 export default App;
