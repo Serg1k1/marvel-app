@@ -17,7 +17,6 @@ const CharInfo = ({ charId }) => {
 
     useEffect(() => {
         updateChar();
-        updateComics();
     }, [charId]);
 
     const updateChar = () => {
@@ -29,13 +28,6 @@ const CharInfo = ({ charId }) => {
 
         getCharacter(charId)
             .then(onCharLoaded)
-    }
-
-    const updateComics = () => {
-        if (!charId) {
-            return;
-        }
-        clearError();
 
         getCharacterComics(charId)
             .then(onComicsLoaded)
@@ -73,6 +65,16 @@ const View = ({ char, comics }) => {
         imgStyle = { 'objectFit': 'unset' };
     }
 
+    const comicsItems = comics.map((item, i) => {
+        return (
+            <li key={i} className="char__comics-item">
+                <Link to={`/comics/${item.id}`} >
+                    {item.title}
+                </Link>
+            </li>
+        )
+    });
+
     return (
         <>
             <div className="char__basics">
@@ -95,18 +97,7 @@ const View = ({ char, comics }) => {
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
                 {comics.length > 0 ? null : "There are no comics with this character"}
-                {
-                    comics.map((item, i) => {
-                        if (i > 9) return;
-                        return (
-                            <li key={i} className="char__comics-item">
-                                <Link to={`/comics/${item.id}`} >
-                                    {item.title}
-                                </Link>
-                            </li>
-                        )
-                    })
-                }
+                {comicsItems}
             </ul>
         </>
     )
