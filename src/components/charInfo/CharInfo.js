@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/spinner';
@@ -8,17 +9,18 @@ import useMarvelService from '../../services/MarvelService';
 
 import './charInfo.scss';
 
-const CharInfo = (props) => {
+const CharInfo = ({ charId }) => {
     const [char, setChar] = useState(null);
+    const [comics, setComics] = useState(null);
 
-    const { loading, error, getCharacter, clearError } = useMarvelService();
+    const { loading, error, getCharacter, clearError, getCharacterComics } = useMarvelService();
 
     useEffect(() => {
         updateChar();
-    }, [props.charId]);
+        updateComics();
+    }, [charId]);
 
     const updateChar = () => {
-        const { charId } = props;
         if (!charId) {
             return;
         }
@@ -29,14 +31,28 @@ const CharInfo = (props) => {
             .then(onCharLoaded)
     }
 
+    const updateComics = () => {
+        if (!charId) {
+            return;
+        }
+        clearError();
+
+        getCharacterComics(charId)
+            .then(onComicsLoaded)
+    }
+
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const skeleton = char || loading || error ? null : <Skeleton />;
+    const onComicsLoaded = (comics) => {
+        setComics(comics);
+    }
+
+    const skeleton = char || comics || loading || error ? null : <Skeleton />;
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error || !char) ? <View char={char} /> : null;
+    const content = !(loading || error || !char || !comics) ? <View char={char} comics={comics} /> : null;
 
     return (
         <div className="char__info">
@@ -49,8 +65,8 @@ const CharInfo = (props) => {
 
 }
 
-const View = ({ char }) => {
-    const { name, description, thumbnail, homepage, wiki, comics } = char;
+const View = ({ char, comics }) => {
+    const { name, description, thumbnail, homepage, wiki } = char;
 
     let imgStyle = { 'objectFit': 'cover' };
     if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
@@ -84,7 +100,9 @@ const View = ({ char }) => {
                         if (i > 9) return;
                         return (
                             <li key={i} className="char__comics-item">
-                                {item.name}
+                                <Link to={`/comics/${item.id}`} >
+                                    {item.title}
+                                </Link>
                             </li>
                         )
                     })
