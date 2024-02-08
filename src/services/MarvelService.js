@@ -24,6 +24,11 @@ const useMarvelService = () => {
         return res.data.results.map(_transformCharComics)
     }
 
+    const getAllCharInfo = (id) => {
+        return Promise.all([getCharacter(id), getCharacterComics(id)]);
+    }
+
+
     const getAllComics = async (offset = 0) => {
         const res = await request(
             `${_apiBase}comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`
@@ -82,7 +87,8 @@ const useMarvelService = () => {
         getCharacter,
         getAllComics,
         getComic,
-        getCharacterComics
+        getCharacterComics,
+        getAllCharInfo
     };
 }
 
