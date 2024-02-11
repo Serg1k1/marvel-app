@@ -3,7 +3,7 @@ import { useState } from "react";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
-import SearchForm from "../form/Form";
+import SearchForm from "../form/CharSearchForm";
 import ErorrBoundary from '../errorBoundary/ErrorBoundary';
 
 import decoration from '../../resources/img/vision.png';
