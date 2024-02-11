@@ -1,0 +1,53 @@
+@import '../../style/variables.scss';
+
+.form {
+    margin-top: 30px;
+    padding: 25px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+    position: relative;
+    z-index: 5;
+    background-color: #fff;
+
+    &__title {
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 29px;
+        &:not(:last-child) {
+            margin-bottom: 18px;
+        }
+    }
+    &__actions {
+        display: grid;
+        row-gap: 22px;
+        &-row {
+            display: grid;
+            grid-template-columns: 250px auto;
+            column-gap: 24px;
+        }
+        &-result {
+            font-weight: 700;
+            font-size: 18px;
+            color: #03710e;
+        }
+    }
+    &__field {
+        height: 38px;
+        padding: 10px;
+        box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+        background-color: #fff;
+        font-weight: 400;
+        font-size: 14px;
+        color: #000;
+        border: none;
+        &__field::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+    }
+    &__buttons {}
+}
+
+.error {
+    font-weight: 700;
+    font-size: 18px;
+    color: #9f0013;
+}

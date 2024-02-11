@@ -41,6 +41,11 @@ const useMarvelService = () => {
         return _transformComics(res.data.results[0]);
     };
 
+    const findChar = async (name) => {
+        const res = await request(`${_apiBase}characters?name=${name}&${_apiKey}`);
+        return _transformSingleChar(res.data.results[0]);
+    }
+
     const _transformCharacter = (char) => {
         return {
             id: char.id,
@@ -54,6 +59,15 @@ const useMarvelService = () => {
             comics: char.comics.items,
         };
     };
+
+    const _transformSingleChar = (char) => {
+        return {
+            id: char.id,
+            name: char.name,
+            description: char.description,
+            thumbnail: char.thumbnail.path + "." + char.thumbnail.extension,
+        }
+    }
 
     const _transformCharComics = (comics) => {
         return {
@@ -88,7 +102,8 @@ const useMarvelService = () => {
         getAllComics,
         getComic,
         getCharacterComics,
-        getAllCharInfo
+        getAllCharInfo,
+        findChar,
     };
 }
 
